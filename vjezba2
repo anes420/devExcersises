@@ -1,0 +1,149 @@
+#include <iostream>
+using namespace std;
+
+/*
+Na školskom takmičenju učestvuje 5 ekipa, a svaka ekipa rješava 4 različita testa. Rezultati ekipa prikazani su matricom
+gdje redovi predstavljaju ekipe, a kolone testove.
+
+Potrebno je:
+
+*/
+
+void input(int matrix[5][4]) {
+	cout << "Enter the elements of your 5x4 matrix: " << endl;
+	for (int i = 0;i < 5;i++) {
+		for (int j = 0;j < 4;j++) {
+			cin >> matrix[i][j];
+		}
+	}
+}
+
+void display(int matrix[5][4]) {
+	for (int i = 0;i < 5;i++) {
+		for (int j = 0;j < 4;j++) {
+			cout << matrix[i][j] << " ";
+		}
+		cout << endl;
+	}
+}
+
+void calcPoints(int matrix[5][4]) {
+// -Izračunati ukupan broj bodova koje je osvojila svaka ekipa.
+	int points = 0;
+	for (int i = 0;i < 5;i++) {
+		for (int j = 0;j < 4;j++) {
+			points += matrix[i][j];
+		}
+		cout << "Points of the Team Number " << i+1 << ": " << points << endl;
+		points = 0;
+	}
+}
+
+void bestTest(int matrix[5][4]) {
+// -Odrediti na kojem testu su sve ekipe zajedno osvojile najviše bodova.
+	int testSum = 0;
+	int preTestSum = 0;
+	int testIndex = 0;
+	for (int j = 0;j < 4;j++) {
+		for (int i = 0;i < 5;i++) {
+			testSum += matrix[i][j];
+		}
+		if (testSum > preTestSum) {
+			preTestSum = testSum;
+			testIndex = j;
+			testSum = 0;
+		}
+	}
+
+	cout << "Test with the most points: " << testIndex + 1 <<endl;
+}
+
+void createMatB(int matrix[5][4], int matrixB[5][4]) {
+//-Formirati matricu B tako što će se svaki element matrice A pomnožiti sa 2,
+//a zatim mu se dodati 3.
+	for (int i = 0;i < 5;i++) {
+		for (int j = 0;j < 4;j++) {
+			matrixB[i][j] = matrix[i][j] * 2 + 3;
+		}
+	}
+}
+
+void worstTeam(int matrix[5][4]) {
+// -Odrediti ekipu koja je osvojila najmanje bodova.
+	int teamScore = 0;
+	int worstTeamScore = 9999;
+	int worstIndex = 0;
+	for (int i = 0;i < 5;i++) {
+		for (int j = 0;j < 4;j++) {
+			teamScore += matrix[i][j];
+		}
+		if (teamScore < worstTeamScore) {
+			worstTeamScore = teamScore;
+			worstIndex = i + 1;
+			teamScore = 0;
+		}
+	}
+	cout << "Team with index " << worstIndex << " has scored least number of points" << endl;
+}
+void createMatD(int matrix[5][4], int matrixD[5][4]) {
+//-Ako se svakom rezultatu na testu oduzmu 2 boda formirati novu matricu D.
+	for (int i = 0;i < 5;i++) {
+		for (int j = 0;j < 4;j++) {
+			matrixD[i][j] = matrix[i][j] - 2;
+		}
+	}
+}
+void createMatE(int matrix[5][4], int matrixB[5][4], int matrixE[5][4]) {
+// -Izračunati matricu E=A+B.
+	for (int i = 0;i < 5;i++) {
+		for (int j = 0;j < 4;j++) {
+			matrixE[i][j] = matrix[i][j] + matrixB[i][j];
+		}
+	}
+}
+void addBonus(int matrix[5][4]) {
+//-Ako svaka ekipa za ukupan rezultat veći od 55 bodova dobija bonus od 5 bodova
+//odredi konačne rezultate svih ekipa.
+	cout << "Final Results: " << endl;
+	int points = 0;
+	for (int i = 0;i < 5;i++) {
+		for (int j = 0;j < 4;j++) {
+			points += matrix[i][j];
+		}
+		if (points > 55) {
+			points += 5;
+		}
+		cout << "Team Number " << i + 1 << ": " << points << endl;
+		points = 0;
+	}
+}
+int main() {
+	int matrix[5][4];
+	int matrixB[5][4];
+	int matrixD[5][4];
+	int matrixE[5][4];
+	
+	input(matrix);
+	cout << endl;
+	display(matrix);
+	cout << endl;
+	calcPoints(matrix);
+	cout << endl;
+	bestTest(matrix);
+	cout << endl;
+	createMatB(matrix, matrixB);
+	cout << endl;
+	cout << "Matrix B: " << endl;
+	display(matrixB);
+	cout << endl;
+	worstTeam(matrix);
+	cout << endl;
+	createMatD(matrix, matrixD);
+	cout << endl;
+	createMatE(matrix, matrixB, matrixE);
+	cout << "Matrix E: " << endl;
+	display(matrixE);
+	cout << endl;
+	cout << endl;
+	addBonus(matrix);
+}
